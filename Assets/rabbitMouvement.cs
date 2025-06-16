@@ -5,7 +5,8 @@ using UnityEngine;
 public class rabbitMouvement : MonoBehaviour
 {
     public float moveDistance = 1f; // Distance à déplacer
-
+    private int horizontalPos = 0;
+    private int verticalPos = 0;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -16,21 +17,30 @@ public class rabbitMouvement : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            // Déplacer vers l'arrière (axe Z négatif)
-            transform.position += Vector3.back * moveDistance;
-            transform.rotation = Quaternion.LookRotation(Vector3.back);
+            if (verticalPos > 0)
+            {
+                // Déplacer vers l'arrière (axe Z négatif)
+                transform.position += Vector3.back * moveDistance;
+                transform.rotation = Quaternion.LookRotation(Vector3.back);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            // Déplacer vers la gauche (axe X négatif)
-            transform.position += Vector3.left * moveDistance;
-            transform.rotation = Quaternion.LookRotation(Vector3.left);
+            if(horizontalPos > -6)
+            {
+                // Déplacer vers la gauche (axe X négatif)
+                transform.position += Vector3.left * moveDistance;
+                transform.rotation = Quaternion.LookRotation(Vector3.left);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            // Déplacer vers la droite (axe X positif)
-            transform.position += Vector3.right * moveDistance;
-            transform.rotation = Quaternion.LookRotation(Vector3.right);
+            if(horizontalPos < 6) 
+            {
+                // Déplacer vers la droite (axe X positif)
+                transform.position += Vector3.right * moveDistance;
+                transform.rotation = Quaternion.LookRotation(Vector3.right);
+            }
         }
     }
 }
