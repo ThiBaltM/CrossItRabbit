@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class rabbitMouvement : MonoBehaviour
 {
-    public float moveDistance = 1f; // Distance à déplacer
+    public float moveDistance = 3f; // Distance à déplacer
     private int horizontalPos = 0;
     private int verticalPos = 0;
     public int mapWidth;
+    public int maxBackward;
+    private int currentBackward = 0;
+    private GameManager gameManager;
+
+    private void Start()
+    {
+        gameManager = gameObject.GetComponentInParent<GameManager>();
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -16,12 +24,21 @@ public class rabbitMouvement : MonoBehaviour
             transform.position += Vector3.forward * moveDistance;
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
             verticalPos += 1;
+            if (currentBackward > 0)
+            {
+                currentBackward-=1;
+            }
+            else
+            {
+                gameManager.deleteLayers();
+            }
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (verticalPos > 0)
+            if (verticalPos > 0 && currentBackward<maxBackward)
             {
                 verticalPos -= 1;
+                currentBackward += 1;
                 // Déplacer vers l'arrière (axe Z négatif)
                 transform.position += Vector3.back * moveDistance;
                 transform.rotation = Quaternion.LookRotation(Vector3.back);
@@ -47,5 +64,10 @@ public class rabbitMouvement : MonoBehaviour
                 transform.rotation = Quaternion.LookRotation(Vector3.right);
             }
         }
+    }
+
+    public int getAdvancement()
+    {
+        return verticalPos;
     }
 }

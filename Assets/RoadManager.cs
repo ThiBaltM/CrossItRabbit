@@ -67,4 +67,12 @@ public class RoadManager : MonoBehaviour
         // Ajouter le véhicule à la liste des véhicules spawnés
         spawnedVehicles.Add(vehicle);
     }
+
+    private void OnDestroy()
+    {
+        foreach(var vehicle in spawnedVehicles)
+        {
+            Destroy(vehicle.gameObject);
+        }
+    }
 }
