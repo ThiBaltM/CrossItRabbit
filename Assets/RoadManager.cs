@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,10 +24,9 @@ public class RoadManager : MonoBehaviour
             GameObject lastVehicle = spawnedVehicles[spawnedVehicles.Count - 1];
             float lastDistanceDone = lastVehicle.GetComponent<vehiculeMovements>().getDistanceDone();
 
-            // Calculer la distance nécessaire en fonction de la vitesse et du temps écoulé
-            requiredDistanceForNextCar = lastVehicle.GetComponent<vehiculeMovements>().getVehiculeLength() + Random.Range(1f, 4f);
+            //Debug.Log(requiredDistanceForNextCar + " : " + lastDistanceDone);
 
-            if (lastDistanceDone > requiredDistanceForNextCar)
+            if (lastDistanceDone > lastVehicle.GetComponent<vehiculeMovements>().getVehiculeLength() + requiredDistanceForNextCar)
             {
                 SpawnVehicle();
             }
@@ -36,7 +36,7 @@ public class RoadManager : MonoBehaviour
     void SpawnVehicle()
     {
         // Choisir un véhicule aléatoire
-        GameObject vehiclePrefab = vehiclePrefabs[Random.Range(0, vehiclePrefabs.Count)];
+        GameObject vehiclePrefab = vehiclePrefabs[UnityEngine.Random.Range(0, vehiclePrefabs.Count)];
 
         // Position du véhicule
         Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
@@ -45,7 +45,7 @@ public class RoadManager : MonoBehaviour
         GameObject vehicle = Instantiate(vehiclePrefab, spawnPosition, Quaternion.identity);
         vehicle.GetComponent<vehiculeMovements>().speed = this.speed;
 
-        requiredDistanceForNextCar = vehicle.GetComponent<vehiculeMovements>().getVehiculeLength() + Random.Range(1f, 4f);
+        requiredDistanceForNextCar = UnityEngine.Random.Range(1f, 4f);
 
         // Ajouter le véhicule à la liste des véhicules spawnés
         spawnedVehicles.Add(vehicle);

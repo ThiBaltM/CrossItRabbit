@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class vehiculeMovements : MonoBehaviour
 {
-    public float speed = 1f; // Vitesse de la voiture
+    public float speed; // Vitesse de la voiture
     public bool moveLeft = false; // Direction initiale : gauche ou droite
     private float distanceDone = 0;
     private float vehiculeLength = 0;
