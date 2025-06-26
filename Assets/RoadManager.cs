@@ -54,6 +54,8 @@ public class RoadManager : MonoBehaviour
 
         // Instancier le véhicule
         GameObject vehicle = Instantiate(vehiclePrefab, spawnPosition, Quaternion.identity);
+        vehicle.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+
         vehicle.GetComponent<vehiculeMovements>().speed = this.speed;
         vehicle.GetComponent<vehiculeMovements>().distanceMax = this.mapWidth*3+10;
         vehicle.GetComponent<vehiculeMovements>().isMouvingRight = this.isRightDirection;
