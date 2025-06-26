@@ -31,6 +31,7 @@ public class rabbitMouvement : MonoBehaviour
             else
             {
                 gameManager.deleteLayers();
+                gameManager.createLayer();
             }
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))

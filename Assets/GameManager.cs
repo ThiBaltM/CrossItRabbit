@@ -9,13 +9,15 @@ public class GameManager : MonoBehaviour
     public GameObject road;
     private rabbitMouvement rabbitMouvement;
     public float gap = 3;
+    private int currentLayer = 0;
     // Start is called before the first frame update
     void Start()
     {
-        for(int i=0; i<8; i++)
+        for(int i=0; i<12; i++)
         {
             layers[i] = Instantiate(road);
             layers[i].transform.position = new Vector3(0,0,gap*i);
+            currentLayer += 1;
         }
         rabbitMouvement = rabbitObject.GetComponent<rabbitMouvement>();
     }
@@ -44,5 +46,12 @@ public class GameManager : MonoBehaviour
             Destroy(layers[key]); // Détruit le GameObject associé
             layers.Remove(key); // Supprime l'entrée du dictionnaire
         }
+    }
+
+    public void createLayer()
+    {
+        layers[currentLayer] = Instantiate (road);
+        layers[currentLayer].transform.position = new Vector3(0, 0, gap * currentLayer);
+        currentLayer += 1;
     }
 }
