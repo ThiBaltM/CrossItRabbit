@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour
     public void createLayer()
     {
         layers[currentLayer] = Instantiate (road);
+        layers[currentLayer] = Instantiate (road);
+        layers[currentLayer].GetComponent<RoadManager>().speed = UnityEngine.Random.Range(4, 12);
         layers[currentLayer].transform.position = new Vector3(0, 0, gap * currentLayer);
         currentLayer += 1;
     }

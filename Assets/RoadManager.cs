@@ -14,11 +14,16 @@ public class RoadManager : MonoBehaviour
     private float requiredDistanceForNextCar = 0;
     public int mapWidth;
 
+    private void Start()
+    {
+        SpawnVehicle(UnityEngine.Random.Range(mapWidth, mapWidth*3));
+        SpawnVehicle(UnityEngine.Random.Range(0, mapWidth));
+    }
     void Update()
     {
         if (spawnedVehicles.Count == 0)
         {
-            SpawnVehicle();
+            SpawnVehicle(null);
         }
         else
         {
@@ -29,12 +34,12 @@ public class RoadManager : MonoBehaviour
 
             if (lastDistanceDone > lastVehicle.GetComponent<vehiculeMovements>().getVehiculeLength() + requiredDistanceForNextCar)
             {
-                SpawnVehicle();
+                SpawnVehicle(null);
             }
         }
     }
 
-    void SpawnVehicle()
+    void SpawnVehicle(float? advancement)
     {
         // Choisir un véhicule aléatoire
         GameObject vehiclePrefab = vehiclePrefabs[UnityEngine.Random.Range(0, vehiclePrefabs.Count)];
@@ -43,11 +48,25 @@ public class RoadManager : MonoBehaviour
         Vector3 spawnPosition;
         if(isRightDirection)
         {
-            spawnPosition = new Vector3(transform.position.x- (mapWidth / 2)*3-5, transform.position.y, transform.position.z);
+            if(advancement == null)
+            {
+                spawnPosition = new Vector3(transform.position.x- (mapWidth / 2)*3-5, transform.position.y, transform.position.z);
+            }
+            else
+            {
+                spawnPosition = new Vector3(transform.position.x - (mapWidth / 2) * 3 - 5+advancement.Value, transform.position.y, transform.position.z);
+            }
         }
         else
         {
-            spawnPosition = new Vector3(transform.position.x+(mapWidth/2)*3+5, transform.position.y, transform.position.z);
+            if(advancement == null)
+            {
+                spawnPosition = new Vector3(transform.position.x+(mapWidth/2)*3+5, transform.position.y, transform.position.z);
+            }
+            else
+            {
+                spawnPosition = new Vector3(transform.position.x + (mapWidth / 2) * 3 + 5 - advancement.Value, transform.position.y, transform.position.z);
+            }
         }
 
         Debug.Log(transform.position.z);
