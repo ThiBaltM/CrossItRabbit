@@ -2,13 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class vehiculeMouvements : MonoBehaviour
+public class vehiculeMovements : MonoBehaviour
 {
-    public float speed = 10f; // Vitesse de la voiture
+    public float speed = 1f; // Vitesse de la voiture
     public bool moveLeft = false; // Direction initiale : gauche ou droite
+    private float distanceDone = 0;
+    private float vehiculeLength = 0;
 
     void Start()
     {
+        Collider collider = GetComponent<Collider>();
+        vehiculeLength = collider.bounds.size.z;
+
         // Détermine la direction initiale
         if (moveLeft)
         {
@@ -25,6 +30,22 @@ public class vehiculeMouvements : MonoBehaviour
     void Update()
     {
         // Déplace la voiture vers l'avant selon sa rotation initiale
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        float distance = speed * Time.deltaTime;
+        transform.Translate(Vector3.forward * distance);
+        distanceDone += distance;
+        if(distanceDone > 16) 
+        { 
+            Destroy(gameObject);
+        }
+    }
+
+    public float getDistanceDone()
+    {
+        return distanceDone;
+    }
+
+    public float getVehiculeLength()
+    {
+        return vehiculeLength;
     }
 }

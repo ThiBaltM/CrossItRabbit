@@ -9,7 +9,8 @@ public class RoadManager : MonoBehaviour
     public float minDistanceBetweenVehicles = 1f; // Distance minimale entre les véhicules
 
     private List<GameObject> spawnedVehicles = new List<GameObject>();
-    private float lastVehicleZPosition = 0f;
+    public float speed = 10f;
+    private float requiredDistanceForNextCar = 0;
 
     void Update()
     {
@@ -20,15 +21,12 @@ public class RoadManager : MonoBehaviour
         else
         {
             GameObject lastVehicle = spawnedVehicles[spawnedVehicles.Count - 1];
-            float distanceSinceLastVehicle = Mathf.Abs(lastVehicle.transform.position.z - lastVehicleZPosition);
-
-            // Supposons que chaque véhicule a une vitesse définie dans un script attaché
-            float vehicleSpeed = lastVehicle.GetComponent<vehiculeMouvements>().speed;
+            float lastDistanceDone = lastVehicle.GetComponent<vehiculeMovements>().getDistanceDone();
 
             // Calculer la distance nécessaire en fonction de la vitesse et du temps écoulé
-            float requiredDistance = vehicleSpeed * Time.deltaTime;
+            requiredDistanceForNextCar = lastVehicle.GetComponent<vehiculeMovements>().getVehiculeLength() + Random.Range(1f, 4f);
 
-            if (distanceSinceLastVehicle >= minDistanceBetweenVehicles + requiredDistance + Random.Range(0f, 4f))
+            if (lastDistanceDone > requiredDistanceForNextCar)
             {
                 SpawnVehicle();
             }
@@ -41,19 +39,13 @@ public class RoadManager : MonoBehaviour
         GameObject vehiclePrefab = vehiclePrefabs[Random.Range(0, vehiclePrefabs.Count)];
 
         // Position du véhicule
-        Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y, lastVehicleZPosition);
+        Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
 
         // Instancier le véhicule
         GameObject vehicle = Instantiate(vehiclePrefab, spawnPosition, Quaternion.identity);
+        vehicle.GetComponent<vehiculeMovements>().speed = this.speed;
 
-        // Ajuster la rotation en fonction de la direction de la route
-        if (!isRightDirection)
-        {
-            vehicle.transform.rotation = Quaternion.Euler(0, 180, 0);
-        }
-
-        // Mettre à jour la position Z du dernier véhicule
-        lastVehicleZPosition = spawnPosition.z + vehicle.GetComponent<Renderer>().bounds.size.z;
+        requiredDistanceForNextCar = vehicle.GetComponent<vehiculeMovements>().getVehiculeLength() + Random.Range(1f, 4f);
 
         // Ajouter le véhicule à la liste des véhicules spawnés
         spawnedVehicles.Add(vehicle);
