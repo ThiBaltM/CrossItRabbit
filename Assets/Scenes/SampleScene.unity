@@ -237,7 +237,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cffe1734bc43bcb47b6433ebca05c04c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.46
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cffe1734bc43bcb47b6433ebca05c04c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -623,8 +623,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rabbit: {fileID: 774605608}
-  height: 10
-  depthOffset: 5
+  height: 20
+  depthOffset: 3
 --- !u!1 &1171483958
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,6 +634,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1171483959}
+  - component: {fileID: 1171483960}
   m_Layer: 0
   m_Name: Road
   m_TagString: Untagged
@@ -657,6 +658,26 @@ Transform:
   - {fileID: 780042626}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1171483960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171483958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe4872bed02e37c49859e3d99555ff8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isRightDirection: 1
+  vehiclePrefabs:
+  - {fileID: 100000, guid: a119eb0fa059db34bbaef286c1af1696, type: 3}
+  - {fileID: 100000, guid: 81c050d9e127fdd45af1f6b8da476b2b, type: 3}
+  - {fileID: 100000, guid: 1af0a2c8773f85c40bdb120f32cd8a8a, type: 3}
+  - {fileID: 100000, guid: 288b117258616aa4f928ba6f91dc47c3, type: 3}
+  - {fileID: 100000, guid: 05aec82adc02f16409639716322b1673, type: 3}
+  minDistanceBetweenVehicles: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

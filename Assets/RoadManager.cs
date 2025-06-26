@@ -23,7 +23,7 @@ public class RoadManager : MonoBehaviour
             float distanceSinceLastVehicle = Mathf.Abs(lastVehicle.transform.position.z - lastVehicleZPosition);
 
             // Supposons que chaque véhicule a une vitesse définie dans un script attaché
-            float vehicleSpeed = lastVehicle.GetComponent<VehiculeMovement>().speed;
+            float vehicleSpeed = lastVehicle.GetComponent<vehiculeMouvements>().speed;
 
             // Calculer la distance nécessaire en fonction de la vitesse et du temps écoulé
             float requiredDistance = vehicleSpeed * Time.deltaTime;
