@@ -43,11 +43,11 @@ public class RoadManager : MonoBehaviour
         Vector3 spawnPosition;
         if(isRightDirection)
         {
-            spawnPosition = new Vector3(transform.position.x- (mapWidth / 2)*3, transform.position.y, transform.position.z);
+            spawnPosition = new Vector3(transform.position.x- (mapWidth / 2)*3-5, transform.position.y, transform.position.z);
         }
         else
         {
-            spawnPosition = new Vector3(transform.position.x+(mapWidth/2)*3, transform.position.y, transform.position.z);
+            spawnPosition = new Vector3(transform.position.x+(mapWidth/2)*3+5, transform.position.y, transform.position.z);
         }
 
         Debug.Log(transform.position.z);
@@ -55,12 +55,12 @@ public class RoadManager : MonoBehaviour
         // Instancier le véhicule
         GameObject vehicle = Instantiate(vehiclePrefab, spawnPosition, Quaternion.identity);
         vehicle.GetComponent<vehiculeMovements>().speed = this.speed;
-        vehicle.GetComponent<vehiculeMovements>().distanceMax = this.mapWidth*3;
+        vehicle.GetComponent<vehiculeMovements>().distanceMax = this.mapWidth*3+10;
         vehicle.GetComponent<vehiculeMovements>().isMouvingRight = this.isRightDirection;
 
 
 
-        requiredDistanceForNextCar = UnityEngine.Random.Range(1f, 4f);
+        requiredDistanceForNextCar = UnityEngine.Random.Range(3f, 12f);
 
         // Ajouter le véhicule à la liste des véhicules spawnés
         spawnedVehicles.Add(vehicle);
