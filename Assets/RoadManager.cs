@@ -12,6 +12,7 @@ public class RoadManager : MonoBehaviour
     private List<GameObject> spawnedVehicles = new List<GameObject>();
     public float speed = 10f;
     private float requiredDistanceForNextCar = 0;
+    public int mapWidth;
 
     void Update()
     {
@@ -39,11 +40,25 @@ public class RoadManager : MonoBehaviour
         GameObject vehiclePrefab = vehiclePrefabs[UnityEngine.Random.Range(0, vehiclePrefabs.Count)];
 
         // Position du véhicule
-        Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        Vector3 spawnPosition;
+        if(isRightDirection)
+        {
+            spawnPosition = new Vector3(transform.position.x- (mapWidth / 2)*3, transform.position.y, transform.position.z);
+        }
+        else
+        {
+            spawnPosition = new Vector3(transform.position.x+(mapWidth/2)*3, transform.position.y, transform.position.z);
+        }
+
+        Debug.Log(transform.position.z);
 
         // Instancier le véhicule
         GameObject vehicle = Instantiate(vehiclePrefab, spawnPosition, Quaternion.identity);
         vehicle.GetComponent<vehiculeMovements>().speed = this.speed;
+        vehicle.GetComponent<vehiculeMovements>().distanceMax = this.mapWidth*3;
+        vehicle.GetComponent<vehiculeMovements>().isMouvingRight = this.isRightDirection;
+
+
 
         requiredDistanceForNextCar = UnityEngine.Random.Range(1f, 4f);
 

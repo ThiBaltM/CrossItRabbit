@@ -5,9 +5,10 @@ using UnityEngine;
 public class vehiculeMovements : MonoBehaviour
 {
     public float speed; // Vitesse de la voiture
-    public bool moveLeft = false; // Direction initiale : gauche ou droite
+    public bool isMouvingRight = true; // Direction initiale : gauche ou droite
     private float distanceDone = 0;
     private float vehiculeLength = 0;
+    public float distanceMax;
 
     void Start()
     {
@@ -15,7 +16,7 @@ public class vehiculeMovements : MonoBehaviour
         vehiculeLength = collider.bounds.size.z;
 
         // Détermine la direction initiale
-        if (moveLeft)
+        if (!isMouvingRight)
         {
             // Tourne la voiture vers la gauche au début
             transform.rotation = Quaternion.Euler(0, 270, 0);
@@ -33,7 +34,7 @@ public class vehiculeMovements : MonoBehaviour
         float distance = speed * Time.deltaTime;
         transform.Translate(Vector3.forward * distance);
         distanceDone += distance;
-        if(distanceDone > 16) 
+        if(distanceDone > distanceMax) 
         { 
             Destroy(gameObject);
         }
