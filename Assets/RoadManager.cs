@@ -69,8 +69,6 @@ public class RoadManager : MonoBehaviour
             }
         }
 
-        Debug.Log(transform.position.z);
-
         // Instancier le véhicule
         GameObject vehicle = Instantiate(vehiclePrefab, spawnPosition, Quaternion.identity);
         vehicle.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);

@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd50cd671e518b0409a4a5251b92a9cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rabbitObject: {fileID: 0}
+  rabbitObject: {fileID: 774605606}
   road: {fileID: 2882430888527393623, guid: c7b3791470a73644cab4435ec5cd292f, type: 3}
   gap: 3
 --- !u!1 &705507993

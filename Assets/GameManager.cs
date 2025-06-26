@@ -15,9 +15,7 @@ public class GameManager : MonoBehaviour
     {
         for(int i=0; i<12; i++)
         {
-            layers[i] = Instantiate(road);
-            layers[i].transform.position = new Vector3(0,0,gap*i);
-            currentLayer += 1;
+            createLayer();
         }
         rabbitMouvement = rabbitObject.GetComponent<rabbitMouvement>();
     }
@@ -50,10 +48,8 @@ public class GameManager : MonoBehaviour
 
     public void createLayer()
     {
-        layers[currentLayer] = Instantiate (road);
-        layers[currentLayer] = Instantiate (road);
+        layers[currentLayer] = Instantiate (road, new Vector3(0, 0, gap * currentLayer), Quaternion.identity);
         layers[currentLayer].GetComponent<RoadManager>().speed = UnityEngine.Random.Range(4, 12);
-        layers[currentLayer].transform.position = new Vector3(0, 0, gap * currentLayer);
         currentLayer += 1;
     }
 }
