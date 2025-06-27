@@ -242,6 +242,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rabbitObject: {fileID: 774605606}
   road: {fileID: 2882430888527393623, guid: c7b3791470a73644cab4435ec5cd292f, type: 3}
+  treeLayer: {fileID: 2882430888527393623, guid: 196ece9460227a74b9c0f949cc4b32df, type: 3}
   gap: 3
 --- !u!1 &705507993
 GameObject:

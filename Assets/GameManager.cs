@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<int,GameObject> layers = new Dictionary<int, GameObject>();
     public GameObject rabbitObject;
     public GameObject road;
+    public GameObject treeLayer;
     private rabbitMouvement rabbitMouvement;
     public float gap = 3;
     private int currentLayer = 0;
@@ -48,8 +49,20 @@ public class GameManager : MonoBehaviour
 
     public void createLayer()
     {
-        layers[currentLayer] = Instantiate (road, new Vector3(0, 0, gap * currentLayer), Quaternion.identity);
-        layers[currentLayer].GetComponent<RoadManager>().speed = UnityEngine.Random.Range(4, 12);
+        if(currentLayer%6< 2)
+        {
+            layers[currentLayer] = Instantiate(road, new Vector3(0, 0, gap * currentLayer), Quaternion.identity);
+            layers[currentLayer].GetComponent<RoadManager>().speed = UnityEngine.Random.Range(4, 12);
+        }else if(currentLayer%6 < 4)
+        {
+            layers[currentLayer] = Instantiate(road, new Vector3(0, 0, gap * currentLayer), Quaternion.identity);
+            layers[currentLayer].GetComponent<RoadManager>().speed = UnityEngine.Random.Range(4, 12);
+            layers[currentLayer].GetComponent<RoadManager>().isRightDirection = false;
+        }
+        else
+        {
+            layers[currentLayer] = Instantiate(treeLayer, new Vector3(0, 0, gap * currentLayer), Quaternion.identity);
+        }
         currentLayer += 1;
     }
 }
