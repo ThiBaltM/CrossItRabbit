@@ -8,17 +8,21 @@ public class GameManager : MonoBehaviour
     public GameObject rabbitObject;
     public GameObject road;
     public GameObject treeLayer;
+    public ForestManager forestManager;
     private rabbitMouvement rabbitMouvement;
     public float gap = 3;
     private int currentLayer = 0;
+    private List<List<bool>> treesRemaining = new List<List<bool>>();
     // Start is called before the first frame update
     void Start()
     {
-        for(int i=0; i<12; i++)
+        treesRemaining = forestManager.generateForest(0.8f, 10, 1);
+        for(int i=0; i<10; i++)
         {
             createLayer();
         }
         rabbitMouvement = rabbitObject.GetComponent<rabbitMouvement>();
+
     }
 
     // Update is called once per frame
@@ -49,6 +53,13 @@ public class GameManager : MonoBehaviour
 
     public void createLayer()
     {
+        if(treesRemaining.Count > 0)
+        {
+            layers[currentLayer] = Instantiate(treeLayer, new Vector3(0, 0, gap * currentLayer), Quaternion.identity);
+            layers[currentLayer].GetComponent<TreesManager>().Initialize(1, treesRemaining[0]);
+            treesRemaining.RemoveAt(0);
+        }
+        /*
         if(currentLayer%6< 2)
         {
             layers[currentLayer] = Instantiate(road, new Vector3(0, 0, gap * currentLayer), Quaternion.identity);
@@ -63,6 +74,7 @@ public class GameManager : MonoBehaviour
         {
             layers[currentLayer] = Instantiate(treeLayer, new Vector3(0, 0, gap * currentLayer), Quaternion.identity);
         }
+        */
         currentLayer += 1;
     }
 }

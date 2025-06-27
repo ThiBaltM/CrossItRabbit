@@ -9,8 +9,27 @@ public class TreesManager : MonoBehaviour
     public float density;
     public float gap;
     public int roadWidth;
-    // Start is called before the first frame update
-    void Start()
+
+    public void Initialize(float density, List<bool>? preset)
+    {
+        if(preset != null)
+        {
+            for(int i=0; i < preset.Count; i++)
+            {
+                if (preset[i])
+                {
+                    createTree(i);
+                }
+            }
+        }
+        else
+        {
+            this.density = density;
+            customStart();
+        }
+    }
+
+    void customStart()
     {
         int totalCases = roadWidth;
         int numberOfTrees = Mathf.FloorToInt(totalCases * density);

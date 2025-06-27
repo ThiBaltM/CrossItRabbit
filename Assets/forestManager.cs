@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class forestManager : MonoBehaviour
+public class ForestManager : MonoBehaviour
 {
     public List<GameObject> treePrefabs;
     public List<GameObject> trees;
@@ -13,29 +13,6 @@ public class forestManager : MonoBehaviour
     public GameObject groundPlane;
 
     private List<List<bool>> forestMatrix; // true = arbre, false = chemin
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        groundPlane.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, 0.3f*forestHeight);
-        forestMatrix = new List<List<bool>>();
-
-        // Initialiser la matrice avec des arbres partout
-        for (int y = 0; y < forestHeight; y++)
-        {
-            List<bool> row = new List<bool>();
-            for (int x = 0; x < forestWidth; x++)
-            {
-                row.Add(true); // Par défaut, chaque case contient un arbre
-            }
-            forestMatrix.Add(row);
-        }
-
-        // Générer un chemin aléatoire
-        GenerateRandomPath();
-
-        createTrees();
-    }
 
     void GenerateRandomPath()
     {
@@ -66,32 +43,35 @@ public class forestManager : MonoBehaviour
         }
     }
 
-
-    void createTrees()
+    public List<List<bool>> generateForest(float density, int length,int numberOfPaths)
     {
-        float verticalOrigine = forestHeight * gap / 2 * (-1) + transform.position.z + gap/2;
-        float horizontalOrigine = forestWidth * gap / 2 * (-1)+ gap/2;
-        for(int ligne=0;ligne< forestMatrix.Count; ligne++)
+        forestMatrix = new List<List<bool>>();
+        this.forestHeight = length;
+
+        // Initialiser la matrice avec des arbres partout
+        for (int y = 0; y < forestHeight; y++)
         {
-            float verticalPos = verticalOrigine + ligne * gap;
-            for(int col = 0; col < forestMatrix[0].Count; col++)
+            List<bool> row = new List<bool>();
+            for (int x = 0; x < forestWidth; x++)
             {
-                if (forestMatrix[ligne][col])
-                {
-                    float horizontalPos = horizontalOrigine + col * gap;
-
-                    GameObject treePrefab = treePrefabs[Random.Range(0, treePrefabs.Count)];
-                    Vector3 treePosition = new Vector3(horizontalPos, transform.position.y, verticalPos);
-                    GameObject tree = Instantiate(treePrefab, treePosition, Quaternion.identity);
-                    trees.Add(tree);
-                }
+                row.Add(true); // Par défaut, chaque case contient un arbre
             }
+            forestMatrix.Add(row);
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        for(int i = 0; i < numberOfPaths; i++)
+        {
+            GenerateRandomPath();
+        }
+
+        int totaltrees = length * this.forestWidth;
+        int finalTrees = Mathf.RoundToInt(totaltrees* density);
+
+        for(int i = 0;i<(totaltrees-finalTrees);i++)
+        {
+            forestMatrix[Random.Range(0, length)][Random.Range(0, forestWidth)] = false;
+        }
+
+        return this.forestMatrix;
     }
 }
