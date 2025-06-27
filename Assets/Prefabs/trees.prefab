@@ -124,6 +124,6 @@ MonoBehaviour:
   - {fileID: 100000, guid: 31bbda51eeab02f44a8e92a7da2f5ff8, type: 3}
   - {fileID: 100000, guid: 8b680e0f7699a254c84ed6737b7eb53d, type: 3}
   - {fileID: 100000, guid: 2509cc5763ca17f4598bf61fd585a93e, type: 3}
-  density: 0.5
+  density: 0.25
   gap: 3
   roadWidth: 13
