@@ -96,7 +96,9 @@ public class GameManager : MonoBehaviour
             else if(largeRoadPattern < 4)
             {
                 layers[currentLayer] = Instantiate(treeLayer, new Vector3(0, 0, gap * currentLayer), Quaternion.identity);
-            }else
+                layers[currentLayer].GetComponent<TreesManager>().Initialize(UnityEngine.Random.Range(0.1f, 0.8f), null);
+            }
+            else
             {
                 layers[currentLayer] = Instantiate(road, new Vector3(0, 0, gap * currentLayer), Quaternion.identity);
                 layers[currentLayer].GetComponent<RoadManager>().speed = UnityEngine.Random.Range(4, 10);
@@ -114,6 +116,7 @@ public class GameManager : MonoBehaviour
             else if (highwayPattern < 6)
             {
                 layers[currentLayer] = Instantiate(treeLayer, new Vector3(0, 0, gap * currentLayer), Quaternion.identity);
+                layers[currentLayer].GetComponent<TreesManager>().Initialize(UnityEngine.Random.Range(0.1f, 0.8f),null);
             }
             else
             {
@@ -124,14 +127,14 @@ public class GameManager : MonoBehaviour
         }else // egenrate next steps
         {
             layers[currentLayer] = Instantiate(treeLayer, new Vector3(0, 0, gap * currentLayer), Quaternion.identity);
-            int choice = UnityEngine.Random.Range(0, 6);
-            if(choice <3)
+            int choice = UnityEngine.Random.Range(0, 5);
+            if(choice <2)
             {
                 treesRemaining = forestManager.generateForest(0.9f, UnityEngine.Random.Range(3, 8), UnityEngine.Random.Range(1, 3));
-            }else if(choice == 4)
+            }else if(choice == 3)
             {
                 smallRoadPattern = 2;
-            }else if( choice == 5)
+            }else if( choice == 4)
             {
                 largeRoadPattern = 5;
             }

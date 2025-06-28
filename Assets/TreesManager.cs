@@ -44,7 +44,7 @@ public class TreesManager : MonoBehaviour
         {
             int randomIndex = UnityEngine.Random.Range(0,numbersList.Count);
             createTree(numbersList[randomIndex]);
-            numbersList.RemoveAt(i);
+            numbersList.RemoveAt(randomIndex);
         }
     }
 

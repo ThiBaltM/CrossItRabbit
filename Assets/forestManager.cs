@@ -46,8 +46,6 @@ public class ForestManager : MonoBehaviour
     public List<List<bool>> generateForest(float density, int length,int numberOfPaths)
     {
         forestMatrix = new List<List<bool>>();
-        int actualLenfth = length;
-        length = length - 1;
         this.forestHeight = length;
 
         // Initialiser la matrice avec des arbres partout
@@ -73,13 +71,6 @@ public class ForestManager : MonoBehaviour
         {
             forestMatrix[Random.Range(0, length)][Random.Range(0, forestWidth)] = false;
         }
-
-        List<bool> finalRow = new List<bool>();
-        for (int x = 0; x < forestWidth; x++)
-        {
-            finalRow.Add(false);
-        }
-        forestMatrix.Add(finalRow);
 
         return this.forestMatrix;
     }
