@@ -34,7 +34,7 @@ public class PlayerFollow : MonoBehaviour
             transform.position = new Vector3(cameraX, cameraY, cameraZ);
 
             // La caméra regarde toujours vers le bas (vers le fond de la scène)
-            transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+            transform.rotation = Quaternion.Euler(70f, 0f, 0f);
 
         }
     }

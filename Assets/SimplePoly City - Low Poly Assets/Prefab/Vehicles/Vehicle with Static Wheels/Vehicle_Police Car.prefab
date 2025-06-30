@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6139595428167459812}
   m_Layer: 0
   m_Name: Vehicle_Police Car
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,7 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  moveLeft: 0
+  isMouvingRight: 1
+  distanceMax: 0
 --- !u!65 &6139595428167459812
 BoxCollider:
   m_ObjectHideFlags: 0

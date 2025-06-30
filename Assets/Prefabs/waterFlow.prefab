@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 4748559222982724889}
   - component: {fileID: 299403417962517009}
   - component: {fileID: -5179357014180995080}
+  - component: {fileID: 8084713340346003505}
   m_Layer: 0
   m_Name: waterFlow
-  m_TagString: river
+  m_TagString: River
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,3 +103,24 @@ MonoBehaviour:
   logYOffset: 0.5
   speed: 5
   mapWidth: 13
+--- !u!65 &8084713340346003505
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2882430888527393623}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 9.999999, y: 2, z: 9.999999}
+  m_Center: {x: 0, y: 1, z: 0}

@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
         }
         createLayer();
         treesRemaining = forestManager.generateForest(0.8f, 5, 2);
-        for(int i=0; i<5; i++)
+        for(int i=0; i<10; i++)
         {
             createLayer();
         }
