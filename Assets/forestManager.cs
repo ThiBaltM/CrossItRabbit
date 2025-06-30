@@ -37,7 +37,6 @@ public class ForestManager : MonoBehaviour
                 currentX += direction;
                 currentX = Mathf.Clamp(currentX, 0, forestWidth - 1);
             }
-            Debug.Log(currentX + ":" + currentY);
             forestMatrix[currentY][currentX] = false;
 
         }

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class rabbitMouvement : MonoBehaviour
@@ -11,6 +13,10 @@ public class rabbitMouvement : MonoBehaviour
     public int maxBackward;
     private int currentBackward = 0;
     private GameManager gameManager;
+    private bool isOnLog = false;
+    private GameObject currentLog;
+    private float posOnLog = 0;
+    private bool ignoreRiverCollsision = true;
 
     private void Start()
     {
@@ -32,6 +38,13 @@ public class rabbitMouvement : MonoBehaviour
             {
                 gameManager.deleteLayers();
                 gameManager.createLayer();
+            }
+
+            if(isOnLog)
+            {
+                ignoreRiverCollsision = true;
+                horizontalPos = Mathf.RoundToInt(transform.position.x / moveDistance);
+                transform.position = new Vector3(horizontalPos*moveDistance, transform.position.y, transform.position.z);
             }
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -66,6 +79,74 @@ public class rabbitMouvement : MonoBehaviour
             }
         }
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Log"))
+        {
+            isOnLog = true;
+            currentLog = other.gameObject;
+
+            LogMouvements logMouvements = currentLog.GetComponent<LogMouvements>();
+            BoxCollider logCollider  = currentLog.GetComponent<BoxCollider>();
+            if (logMouvements != null)
+            {
+                
+                float logLength = logCollider.size.x;
+                Debug.Log(transform.position.x + " - " + currentLog.transform.position.x + " - " + logLength);
+                if(transform.position.x < currentLog.transform.position.x + logLength && transform.position.x>currentLog.transform.position.x-logLength)
+                {
+                    posOnLog = transform.position.x - currentLog.transform.position.x;
+                }
+                else
+                {
+                    HandlePlayerLoss();
+                    
+                }
+            }
+        }
+
+        if (other.CompareTag("River") && !isOnLog)
+        {
+            if(ignoreRiverCollsision)
+            {
+                ignoreRiverCollsision = false;
+            }
+            else
+            {
+                HandlePlayerLoss();
+            }
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Log"))
+        {
+            isOnLog = false;
+            currentLog = null;
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Log"))
+        {
+            transform.position = new Vector3(currentLog.transform.position.x + posOnLog, transform.position.y, transform.position.z);
+            if(transform.position.x > moveDistance * mapWidth / 2 || transform.position.x < -moveDistance * mapWidth / 2)
+            {
+                HandlePlayerLoss();
+            }
+        }
+    }
+
+
+    void HandlePlayerLoss()
+    {
+        Debug.Log("Le joueur est tombé dans l'eau !");
+        // Ajoutez ici votre logique de fin de jeu ou de perte de vie
+    }
+
 
     public int getAdvancement()
     {
