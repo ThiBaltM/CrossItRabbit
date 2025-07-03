@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
 
     public void deleteLayers()
     {
-        int seuil = rabbitMouvement.getAdvancement() - 2;
+        int seuil = rabbitMouvement.getAdvancement() - 4;
         List<int> keysToRemove = new List<int>();
 
         foreach (int a in layers.Keys)
@@ -140,7 +140,7 @@ public class GameManager : MonoBehaviour
         else // egenrate next steps
         {
             layers[currentLayer] = Instantiate(treeLayer, new Vector3(0, 0, gap * currentLayer), Quaternion.identity);
-            int choice = UnityEngine.Random.Range(0, 6);
+            int choice = 6;//UnityEngine.Random.Range(0, 6);
             if (choice < 2)
             {
                 treesRemaining = forestManager.generateForest(0.9f, UnityEngine.Random.Range(3, 8), UnityEngine.Random.Range(1, 3));
@@ -164,5 +164,10 @@ public class GameManager : MonoBehaviour
             }
         }
         currentLayer += 1;
+    }
+
+    public Dictionary<int,GameObject> getLayers()
+    {
+        return layers;
     }
 }

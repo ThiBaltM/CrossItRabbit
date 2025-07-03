@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class rabbitMouvement : MonoBehaviour
@@ -12,6 +14,7 @@ public class rabbitMouvement : MonoBehaviour
     public int mapWidth;
     public int maxBackward;
     private int currentBackward = 0;
+    private int oldBackward = 0;
     private GameManager gameManager;
     private bool isOnLog = false;
     private GameObject currentLog;
@@ -19,6 +22,10 @@ public class rabbitMouvement : MonoBehaviour
     private bool isAnimatingLoss = false;
     private bool isMoving = false;
     private bool dieFromWater = false;
+    private int[] oldPos = new int[2];
+    private bool hurtTree = false;
+    public bool reaxe = false;
+    public GameObject sphere;
 
     // Référence à l'Animator
     private Animator animator;
@@ -33,6 +40,7 @@ public class rabbitMouvement : MonoBehaviour
 
     void Update()
     {
+
         // Réinitialiser IsRunning à false si aucune touche n'est pressée
         if (!Input.anyKey && !isAnimatingLoss && !isMoving)
         {
@@ -45,9 +53,12 @@ public class rabbitMouvement : MonoBehaviour
         // Votre logique de mouvement
         if (Input.GetKeyDown(KeyCode.UpArrow) && !isAnimatingLoss && !isMoving)
         {
-            if (animator != null) animator.SetBool("IsRunning", true);
-            StartCoroutine(MovePlayer(Vector3.forward * moveDistance, Quaternion.LookRotation(Vector3.forward)));
+            prepareMouvement();
             verticalPos += 1;
+            reaxe = (gameManager.getLayers()[this.verticalPos].GetComponent<WaterFlowManager>() == null);
+            StartCoroutine(MovePlayer(Vector3.forward * moveDistance, Quaternion.LookRotation(Vector3.forward)));
+            //reaxer s'il sort des buches
+
             if (currentBackward > 0)
             {
                 currentBackward -= 1;
@@ -60,10 +71,7 @@ public class rabbitMouvement : MonoBehaviour
             if (isOnLog)
             {
                 horizontalPos = Mathf.RoundToInt(transform.position.x / moveDistance);
-                Vector3 newPosition = new Vector3(horizontalPos * moveDistance, transform.position.y, transform.position.z);
-                // Si le joueur est sur une bûche, nous devons utiliser une autre approche pour le déplacement
-                // car nous ne pouvons pas simplement téléporter le joueur
-                // Nous devons décaler posOnLog pour correspondre à la nouvelle position
+
                 if (currentLog != null)
                 {
                     posOnLog = horizontalPos * moveDistance - currentLog.transform.position.x;
@@ -72,17 +80,25 @@ public class rabbitMouvement : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow) && !isAnimatingLoss && !isMoving)
         {
-            if (animator != null) animator.SetBool("IsRunning", true);
+            
+            
             if (verticalPos > 0 && currentBackward < maxBackward)
             {
+                prepareMouvement();
                 verticalPos -= 1;
+                oldBackward = currentBackward;
                 currentBackward += 1;
+                //reaxer s'il sort des buches
+                sphere.transform.position = gameManager.getLayers()[this.verticalPos].transform.position;
+
+                reaxe = (gameManager.getLayers()[this.verticalPos].GetComponent<WaterFlowManager>() == null);
                 StartCoroutine(MovePlayer(Vector3.back * moveDistance, Quaternion.LookRotation(Vector3.back)));
             }
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow) && !isAnimatingLoss && !isMoving)
         {
-            if (animator != null) animator.SetBool("IsRunning", true);
+            prepareMouvement();
+            reaxe = false;
             if (horizontalPos > mapWidth / 2 * (-1))
             {
                 horizontalPos -= 1;
@@ -91,7 +107,8 @@ public class rabbitMouvement : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow) && !isAnimatingLoss && !isMoving)
         {
-            if (animator != null) animator.SetBool("IsRunning", true);
+            prepareMouvement();
+            reaxe = false;
             if (horizontalPos < mapWidth / 2)
             {
                 horizontalPos += 1;
@@ -99,6 +116,14 @@ public class rabbitMouvement : MonoBehaviour
             }
         }
     }
+    private void prepareMouvement()
+    {
+        oldPos[0] = horizontalPos;
+        oldPos[1] = verticalPos;
+        if (animator != null) animator.SetBool("IsRunning", true);
+
+    }
+
 
     // Coroutine pour déplacer le joueur de manière fluide
     IEnumerator MovePlayer(Vector3 direction, Quaternion targetRotation)
@@ -110,32 +135,26 @@ public class rabbitMouvement : MonoBehaviour
         Vector3 startPosition = transform.position;
         Quaternion startRotation = transform.rotation;
         Vector3 targetPosition = startPosition + direction;
-
-        // Si le joueur est sur une bûche, nous devons ajuster la position cible
-        if (isOnLog && currentLog != null)
+        if (reaxe)
         {
-            // Calculer la nouvelle position sur la bûche
-            float newXPos = startPosition.x + direction.x;
-            float newPosOnLog = newXPos - currentLog.transform.position.x;
-
-            // Limiter le mouvement pour que le joueur reste sur la bûche
-            BoxCollider logCollider = currentLog.GetComponent<BoxCollider>();
-            if (logCollider != null)
-            {
-                float logLength = logCollider.size.x;
-                float logX = currentLog.transform.position.x;
-                float halfLogLength = logLength / 2f;
-
-                // Limiter newXPos pour qu'il reste dans les limites de la bûche
-                newXPos = Mathf.Clamp(newXPos, logX - halfLogLength, logX + halfLogLength);
-                targetPosition.x = newXPos;
-                posOnLog = newXPos - logX;
-            }
+            horizontalPos = Mathf.RoundToInt(transform.position.x / moveDistance);
+            targetPosition.x = horizontalPos*moveDistance;
         }
+        
 
         while (elapsedTime < moveTime)
         {
             // Interpolation linéaire pour la position
+            if (hurtTree)
+            {
+                targetPosition = new Vector3(oldPos[0] * moveDistance, transform.position.y, oldPos[1] * moveDistance);
+                horizontalPos = oldPos[0];
+                verticalPos = oldPos[1];
+                if(direction == Vector3.back * moveDistance)
+                {
+                    currentBackward = oldBackward;
+                }
+            }
             transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / moveTime);
             // Interpolation sphérique pour la rotation (plus fluide que Lerp pour les rotations)
             transform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime / moveTime*2);
@@ -147,6 +166,7 @@ public class rabbitMouvement : MonoBehaviour
         transform.position = targetPosition;
         transform.rotation = targetRotation;
 
+        hurtTree = false;
         isMoving = false;
 
         animator.SetBool("isRunning", false);
@@ -183,6 +203,10 @@ public class rabbitMouvement : MonoBehaviour
         if (other.CompareTag("Car") && !isMoving)
         {
             HandlePlayerLoss();
+        }
+        if (other.CompareTag("Tree"))
+        {
+            hurtTree = true;
         }
     }
 
@@ -231,8 +255,7 @@ public class rabbitMouvement : MonoBehaviour
     {
         if (isAnimatingLoss) return;
 
-        animator.SetBool("isDying",true);
-        Debug.Log("Le joueur est tombé dans l'eau !");
+        animator.SetBool("isDying",true); 
         isAnimatingLoss = true;
         StartCoroutine(PlayerLossAnimation());
     }

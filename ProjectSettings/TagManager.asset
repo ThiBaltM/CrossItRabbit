@@ -7,6 +7,7 @@ TagManager:
   - Log
   - River
   - Car
+  - Tree
   layers:
   - Default
   - TransparentFX

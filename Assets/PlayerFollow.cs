@@ -4,14 +4,10 @@ using UnityEngine;
 
 public class PlayerFollow : MonoBehaviour
 {
-    private void Start()
-    {
-        transform.position = new Vector3(rabbit.position.x, height, -depthOffset);
-    }
     public Transform rabbit; // Référence au transform du lapin
-    public float height = 15f; // Hauteur de la caméra au-dessus du lapin
-    public float depthOffset = 5f; // Décalage en profondeur pour voir plus devant le lapin
-    private float advancement=0;
+    public float height; // Hauteur de la caméra au-dessus du lapin
+    public float depthOffset; // Décalage en profondeur pour voir plus devant le lapin
+    private float advancement=-30;
 
     void LateUpdate()
     {
