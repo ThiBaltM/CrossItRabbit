@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject treeLayer;
     public GameObject waterLayer;
     public ForestManager forestManager;
+    public ScoreManager scoreManager;
     private rabbitMouvement rabbitMouvement;
     public float gap = 3;
     public int roadWidth = 13;
@@ -44,7 +45,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        scoreManager.scoreValue = this.rabbitMouvement.getAdvancement();
     }
 
     public void deleteLayers()

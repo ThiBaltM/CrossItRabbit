@@ -88,8 +88,6 @@ public class rabbitMouvement : MonoBehaviour
                 verticalPos -= 1;
                 oldBackward = currentBackward;
                 currentBackward += 1;
-                //reaxer s'il sort des buches
-                sphere.transform.position = gameManager.getLayers()[this.verticalPos].transform.position;
 
                 reaxe = (gameManager.getLayers()[this.verticalPos].GetComponent<WaterFlowManager>() == null);
                 StartCoroutine(MovePlayer(Vector3.back * moveDistance, Quaternion.LookRotation(Vector3.back)));
